@@ -9,6 +9,7 @@ import {
   InputRightElement
 } from "@chakra-ui/react"
 
+import { API } from "./services/api"
 import { useState } from "react"
 
 import { AiFillEye } from "react-icons/ai"
@@ -20,20 +21,30 @@ import FifaHeaderComp from "./components/headers/fifa-header-component"
 
 export default function Home() {
 
-  //email
-  const [email, setEmail] = useState('')
-  const handleChange = (event: any) => setEmail(event.target.value)
-
-  //password
-  const [password, setPassword] = useState('')
-  const handleChangePassword = (event: any) => setPassword(event.target.value)
   const [show, setShow] = useState(false)
   const handleClick = () => setShow(!show)
 
-  //form
+  //set visibility form
   const [SideVisibility, setSideVisibility] = useState(true)
   const handleVisibility = () => setSideVisibility(!SideVisibility)
 
+  interface initialLogin {
+    email: string
+    senha: string
+  }
+
+  const initialLogin: initialLogin = {
+    email: "",
+    senha: ""
+  }
+
+  const [fields, setFields] = useState(initialLogin)
+  const handleFieldsChange = (event: any) => {
+    setFields({
+      ...fields,
+      [event.currentTarget.name]: [event.currentTarget.value]
+    })
+  }
 
   return (
     <Flex
@@ -46,7 +57,6 @@ export default function Home() {
         xl: "flex"
       }}
     >
-
       <Flex
         id="leftSide"
         bg={'red'}
@@ -101,7 +111,6 @@ export default function Home() {
         </Box>
 
       </Flex>
-
       {SideVisibility ?
         <Flex
           id="rightSide"
@@ -161,12 +170,14 @@ export default function Home() {
                     w={'25rem'}
                     size='md'>
                     <Input
+                      name="email"
+                      value={fields.email}
+                      onChange={handleFieldsChange}
                       width={'19rem'}
                       variant='flushed'
                       pr='4.5rem'
                       type='email'
                       color={'white'}
-                      onChange={handleChange}
                     />
                   </InputGroup>
                 </Box>
@@ -174,7 +185,8 @@ export default function Home() {
                 <Box>
                   <Text
                     fontSize='17px'
-                    color={'#96A4BB'}>Sua
+                    color={'#96A4BB'}>
+                    Sua
                     senha
                   </Text>
                   <InputGroup
@@ -183,12 +195,14 @@ export default function Home() {
                     size='md'>
 
                     <Input
+                      name="senha"
+                      value={fields.senha}
+                      onChange={handleFieldsChange}
                       width={'19rem'}
                       variant='flushed'
                       pr='4.9rem'
                       type={show ? 'text' : 'password'}
                       color={'white'}
-                      onChange={handleChangePassword}
                     />
                     <InputRightElement
                       width='17rem'>
@@ -240,9 +254,7 @@ export default function Home() {
             </Box>
           </Flex>
         </Flex>
-
         :
-
         <Flex
           id="rightSide"
           w={{
