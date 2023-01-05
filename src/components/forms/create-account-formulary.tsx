@@ -1,6 +1,14 @@
-import { useState } from "react"
-import { Box, Text, HStack, Input, Button, InputGroup } from "@chakra-ui/react"
+import {
+    Box,
+    Text,
+    HStack,
+    Input,
+    Button,
+    InputGroup
+} from "@chakra-ui/react"
 
+import { API } from "../../services/api"
+import { useState } from "react"
 
 function CreateAccountFormulary({ handlevisibility }: any) {
 
@@ -26,12 +34,14 @@ function CreateAccountFormulary({ handlevisibility }: any) {
     }
 
     const [fields, setFields] = useState(initialFormulary)
+    
     const handleFieldsChange = (event: any) => {
         setFields({
             ...fields,
             [event.currentTarget.name]: [event.currentTarget.value]
 
         })
+        console.log(fields)
     }
 
     return (
@@ -228,6 +238,16 @@ function CreateAccountFormulary({ handlevisibility }: any) {
                         fontSize={14}
                         paddingInline={8}
                         borderRadius={30}
+
+                        onClick={async () => {
+                            await API.post("/post/users", {
+                                fields
+                            }).then(response => {
+                                console.log(response)
+                            }).catch(error => {
+                                console.log(error)
+                            })
+                        }}
                     >
                         CRIAR CONTA
                     </Button>

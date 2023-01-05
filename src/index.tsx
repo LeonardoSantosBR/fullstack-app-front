@@ -59,7 +59,7 @@ export default function Home() {
     >
       <Flex
         id="leftSide"
-        bg={'red'}
+        bg={'green'}
         w={{
           sm: "100vw",
           md: "100vw",
