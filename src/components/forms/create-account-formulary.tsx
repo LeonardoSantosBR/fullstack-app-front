@@ -8,41 +8,52 @@ import {
 } from "@chakra-ui/react"
 
 import { API } from "../../services/api"
-import { useState } from "react"
+import { useReducer, useState } from "react"
 
 function CreateAccountFormulary({ handlevisibility }: any) {
-
-    interface interfaceFormulary {
-        email: string
-        nome: string
-        cpf: string
-        dataNascimento: string
-        telefone: string
-        celular: string
-        senha: string
-        confirmarSenha: string
+    
+    function reducer(state: any, action: any) {
+        switch (action.type) {
+            case "email":
+                return { ...state, email: action.payload.value }
+            case "nome": {
+                return { ...state, nome: action.payload.value }
+            }
+            case "cpf": {
+                return { ...state, cpf: action.payload.value }
+            }
+            case "dataNascimento": {
+                return { ...state, dataNascimento: action.payload.value }
+            }
+            case "telefone": {
+                return { ...state, telefone: action.payload.value }
+            }
+            case "celular": {
+                return { ...state, celular: action.payload.value }
+            }
+            case "senha": {
+                return { ...state, senha: action.payload.value }
+            }
+            case "confirmarSenha": {
+                return { ...state, confirmarSenha: action.payload.value }
+            }
+            default:
+                return state
+        }
     }
-    const initialFormulary: interfaceFormulary = {
+
+    const initialState = {
         email: "",
         nome: "",
         cpf: "",
-        dataNascimento: "",
+        dataNascimento: new Date(),
         telefone: "",
         celular: "",
         senha: "",
         confirmarSenha: ""
     }
 
-    const [fields, setFields] = useState(initialFormulary)
-    
-    const handleFieldsChange = (event: any) => {
-        setFields({
-            ...fields,
-            [event.currentTarget.name]: [event.currentTarget.value]
-
-        })
-        console.log(fields)
-    }
+    const [fields, dispatch] = useReducer(reducer, initialState)
 
     return (
 
@@ -63,7 +74,11 @@ function CreateAccountFormulary({ handlevisibility }: any) {
                     <Input
                         name="email"
                         value={fields.email}
-                        onChange={handleFieldsChange}
+                        onChange={event => dispatch({
+                            type: "email",
+                            payload: { value: event.target.value },
+                            caretPosition: event.target.selectionStart
+                        })}
                         type='email'
                         color={'white'}
                     />
@@ -81,7 +96,11 @@ function CreateAccountFormulary({ handlevisibility }: any) {
                     <Input
                         name="nome"
                         value={fields.nome}
-                        onChange={handleFieldsChange}
+                        onChange={event => dispatch({
+                            type: "nome",
+                            payload: { value: event.target.value },
+                            caretPosition: event.target.selectionStart
+                        })}
                         pr='4.5rem'
                         type='email'
                         color={'white'}
@@ -101,7 +120,11 @@ function CreateAccountFormulary({ handlevisibility }: any) {
                     <Input
                         name="cpf"
                         value={fields.cpf}
-                        onChange={handleFieldsChange}
+                        onChange={event => dispatch({
+                            type: "cpf",
+                            payload: { value: event.target.value },
+                            caretPosition: event.target.selectionStart
+                        })}
                         pr='4.5rem'
                         type='text'
                         color={'white'}
@@ -123,7 +146,11 @@ function CreateAccountFormulary({ handlevisibility }: any) {
                     <Input
                         name="dataNascimento"
                         value={fields.dataNascimento}
-                        onChange={handleFieldsChange}
+                        onChange={event => dispatch({
+                            type: "dataNascimento",
+                            payload: { value: event.target.value },
+                            caretPosition: event.target.selectionStart,
+                        })}
                         pr='4.5rem'
                         type='date'
                         color={'white'}
@@ -150,7 +177,11 @@ function CreateAccountFormulary({ handlevisibility }: any) {
                             <Input
                                 name="telefone"
                                 value={fields.telefone}
-                                onChange={handleFieldsChange}
+                                onChange={event => dispatch({
+                                    type: "telefone",
+                                    payload: { value: event.target.value },
+                                    caretPosition: event.target.selectionStart,
+                                })}
                                 pr='4.5rem'
                                 type='text'
                                 color={'white'}
@@ -172,7 +203,11 @@ function CreateAccountFormulary({ handlevisibility }: any) {
                             <Input
                                 name="celular"
                                 value={fields.celular}
-                                onChange={handleFieldsChange}
+                                onChange={event => dispatch({
+                                    type: "celular",
+                                    payload: { value: event.target.value },
+                                    caretPosition: event.target.selectionStart
+                                })}
                                 pr='4.5rem'
                                 type='text'
                                 color={'white'}
@@ -199,7 +234,11 @@ function CreateAccountFormulary({ handlevisibility }: any) {
                         <Input
                             name="senha"
                             value={fields.senha}
-                            onChange={handleFieldsChange}
+                            onChange={event => dispatch({
+                                type: "senha",
+                                payload: { value: event.target.value },
+                                caretPositon: event.target.selectionStart
+                            })}
                             pr='4.5rem'
                             type='password'
                             color={'white'}
@@ -220,7 +259,11 @@ function CreateAccountFormulary({ handlevisibility }: any) {
                         <Input
                             name="confirmarSenha"
                             value={fields.confirmarSenha}
-                            onChange={handleFieldsChange}
+                            onChange={event => dispatch({
+                                type: "confirmarSenha",
+                                payload: { value: event.target.value },
+                                caretPosition: event.target.selectionStart
+                            })}
                             pr='4.5rem'
                             type='password'
                             color={'white'}
@@ -238,12 +281,11 @@ function CreateAccountFormulary({ handlevisibility }: any) {
                         fontSize={14}
                         paddingInline={8}
                         borderRadius={30}
-
                         onClick={async () => {
                             await API.post("/post/users", {
                                 fields
                             }).then(response => {
-                                console.log(response)
+                                console.log(response.data)
                             }).catch(error => {
                                 console.log(error)
                             })
