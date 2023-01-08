@@ -10,7 +10,7 @@ import {
 } from "@chakra-ui/react"
 
 import { API } from "./services/api"
-import { useState } from "react"
+import { useReducer, useState } from "react"
 
 import { AiFillEye } from "react-icons/ai"
 import { AiFillEyeInvisible } from "react-icons/ai"
@@ -28,64 +28,41 @@ export default function Home() {
   const [SideVisibility, setSideVisibility] = useState(true)
   const handleVisibility = () => setSideVisibility(!SideVisibility)
 
-  interface initialLogin {
-    email: string
-    senha: string
+
+
+  function reducer(state: any, action: any) {
+    switch (action.type) {
+      case 'email':
+        return { ...state, email: action.payload.value }
+      case 'senha':
+        return { ...state, senha: action.payload.value }
+      default:
+        return state
+    }
   }
 
-  const initialLogin: initialLogin = {
+  const initialState = {
     email: "",
     senha: ""
   }
 
-  const [fields, setFields] = useState(initialLogin)
-  const handleFieldsChange = (event: any) => {
-    setFields({
-      ...fields,
-      [event.currentTarget.name]: [event.currentTarget.value]
-    })
-  }
+  const [fields, dispatch] = useReducer(reducer, initialState)
 
   return (
     <Flex
       id="containerPrincipal"
       w="100%"
       h="100vh"
-      display={{
-        md: "block",
-        lg: "flex",
-        xl: "flex"
-      }}
     >
       <Flex
+        width={"70%"}
         id="leftSide"
-        bg={'green'}
-        w={{
-          sm: "100vw",
-          md: "100vw",
-          lg: "60vw",
-          xl: "70vw"
-        }}
-        h={{
-          sm: "90vh",
-          md: "90vh",
-          lg: "100vh",
-          xl: "100vh"
-        }}
-        justifyContent={{
-          sm: "center",
-          md: "center",
-          lg: "flex-start",
-          xl: "flex-start"
-        }}
-        alignItems={{
-          sm: "center",
-          md: "center",
-          lg: "flex-start",
-          xl: "flex-start"
-        }}
+        bgImage="https://conteudo.imguol.com.br/c/esporte/68/2020/04/21/cristiano-ronaldo-faz-comemoracao-calma-calma-contra-o-barcelona-em-2012-1587494648948_v2_1920x1296.jpg"
+        bgSize={"cover"}
+        bgPosition="center"
+        bgRepeat="no-repeat"
+        padding={"50px"}
       >
-
         <Box
           mt={50}
           p="20">
@@ -104,7 +81,8 @@ export default function Home() {
             <Text
               as={'b'}
               color={'gray.50'}
-              fontSize='2xl'>
+              fontSize='2xl'
+            >
               Registre-se para aceder aos nossos programas e documentários originais, bem como ao melhor arquivo de sempre. The Happiest Man in the World (O Homem mais Feliz do Mundo) Disponível apenas em FIFA+
             </Text>
           </VStack>
@@ -114,30 +92,7 @@ export default function Home() {
       {SideVisibility ?
         <Flex
           id="rightSide"
-          w={{
-            sm: "100vw",
-            md: "100vw",
-            lg: "40vw",
-            xl: "30vw"
-          }}
-          h={{
-            sm: "100vh",
-            md: "100vh",
-            lg: "100vh",
-            xl: "100vh"
-          }}
-          justifyContent={{
-            sm: "center",
-            md: "center",
-            lg: "center",
-            xl: "flex-end"
-          }}
-          alignItems={{
-            sm: "center",
-            md: "center",
-            lg: "center",
-            xl: "flex-start"
-          }}
+          w={"30%"}
           bgGradient='linear(90deg,
             rgba(0,4,91,1)
             12%,
@@ -156,10 +111,8 @@ export default function Home() {
               >
                 Registre-se...
               </Text>
-
               <VStack
                 spacing={'40px'}>
-
                 <Box>
                   <Text
                     fontSize='17px'
@@ -172,7 +125,11 @@ export default function Home() {
                     <Input
                       name="email"
                       value={fields.email}
-                      onChange={handleFieldsChange}
+                      onChange={event => dispatch({
+                        type: "email",
+                        payload: { value: event.target.value },
+                        caretPosition: event.target.selectionStart
+                      })}
                       width={'19rem'}
                       variant='flushed'
                       pr='4.5rem'
@@ -181,7 +138,6 @@ export default function Home() {
                     />
                   </InputGroup>
                 </Box>
-
                 <Box>
                   <Text
                     fontSize='17px'
@@ -193,11 +149,14 @@ export default function Home() {
                     mb={10}
                     w={'25rem'}
                     size='md'>
-
                     <Input
                       name="senha"
                       value={fields.senha}
-                      onChange={handleFieldsChange}
+                      onChange={event => dispatch({
+                        type: "senha",
+                        payload: { value: event.target.value },
+                        caretPosition: event.target.selectionStart
+                      })}
                       width={'19rem'}
                       variant='flushed'
                       pr='4.9rem'
@@ -214,7 +173,6 @@ export default function Home() {
                       </Button>
                     </InputRightElement>
                   </InputGroup>
-
                   <Button
                     colorScheme='blue'
                     fontSize={14}
@@ -222,7 +180,6 @@ export default function Home() {
                     borderRadius={30}>
                     Entrar
                   </Button>
-
                   <Text
                     mt={'45px'}
                     cursor={'pointer'}
@@ -232,7 +189,6 @@ export default function Home() {
                   >
                     Esqueceu-se da sua senha?
                   </Text>
-
                   <Box mt={'40px'}>
                     <Text
                       color={'white'}
@@ -250,42 +206,20 @@ export default function Home() {
                   </Box>
                 </Box>
               </VStack>
-
             </Box>
           </Flex>
         </Flex>
         :
         <Flex
           id="rightSide"
-          w={{
-            lg: "40vw",
-            xl: "30vw"
-          }}
-          h={{
-            sm: "110vh",
-            md: "110vh",
-            lg: "100vh",
-            xl: "100vh"
-          }}
-          justifyContent={{
-            sm: "center",
-            md: "center",
-            lg: "center",
-            xl: "flex-start"
-          }}
-          alignItems={{
-            sm: "center",
-            md: "center",
-            lg: "center",
-            xl: "flex-start"
-          }}
+          w={"30%"}
           bgGradient='linear(90deg,
           rgba(0,4,91,1)
           12%,
           rgba(0,0,0,1)
           99%)'>
 
-          <Flex>
+          <Flex >
             <Box
               mt={50}
               p="20">

@@ -8,10 +8,11 @@ import {
 } from "@chakra-ui/react"
 
 import { API } from "../../services/api"
-import { useReducer, useState } from "react"
+
+import { useReducer } from "react"
 
 function CreateAccountFormulary({ handlevisibility }: any) {
-    
+
     function reducer(state: any, action: any) {
         switch (action.type) {
             case "email":
@@ -56,13 +57,11 @@ function CreateAccountFormulary({ handlevisibility }: any) {
     const [fields, dispatch] = useReducer(reducer, initialState)
 
     return (
-
         <>
-            <Box>
+            <Box width={"100%"}>
                 <Text
                     fontSize='17px'
-                    color={'#96A4BB'
-                    }
+                    color={'#96A4BB'}
                 >
                     Email
                 </Text>
@@ -72,6 +71,7 @@ function CreateAccountFormulary({ handlevisibility }: any) {
                     size='md'
                 >
                     <Input
+                        required
                         name="email"
                         value={fields.email}
                         onChange={event => dispatch({
@@ -80,13 +80,15 @@ function CreateAccountFormulary({ handlevisibility }: any) {
                             caretPosition: event.target.selectionStart
                         })}
                         type='email'
+                        
                         color={'white'}
+                        variant={"flushed"}
                     />
                 </InputGroup>
                 <Text
                     fontSize='17px'
-                    color={'#96A4BB'
-                    }>
+                    color={'#96A4BB'}
+                >
                     Nome completo
                 </Text>
                 <InputGroup
@@ -94,6 +96,7 @@ function CreateAccountFormulary({ handlevisibility }: any) {
                     size='md'
                 >
                     <Input
+                        required
                         name="nome"
                         value={fields.nome}
                         onChange={event => dispatch({
@@ -104,13 +107,14 @@ function CreateAccountFormulary({ handlevisibility }: any) {
                         pr='4.5rem'
                         type='email'
                         color={'white'}
+                        variant={"flushed"}
                     />
                 </InputGroup>
                 <Text
                     fontSize='17px'
                     mt={5}
-                    color={'#96A4BB'
-                    }>
+                    color={'#96A4BB'}
+                >
                     cpf
                 </Text>
                 <InputGroup
@@ -118,6 +122,7 @@ function CreateAccountFormulary({ handlevisibility }: any) {
                     size='md'
                 >
                     <Input
+                        required
                         name="cpf"
                         value={fields.cpf}
                         onChange={event => dispatch({
@@ -128,22 +133,23 @@ function CreateAccountFormulary({ handlevisibility }: any) {
                         pr='4.5rem'
                         type='text'
                         color={'white'}
+                        variant={"flushed"}
                     />
                 </InputGroup>
 
                 <Text
                     fontSize='17px'
                     mt={5}
-                    color={'#96A4BB'
-                    }
+                    color={'#96A4BB'}
                 >
                     Data de nascimento
                 </Text>
                 <InputGroup
-                    w={'20rem'}
+                    w={'15rem'}
                     size='md'
                 >
                     <Input
+                        required
                         name="dataNascimento"
                         value={fields.dataNascimento}
                         onChange={event => dispatch({
@@ -154,6 +160,7 @@ function CreateAccountFormulary({ handlevisibility }: any) {
                         pr='4.5rem'
                         type='date'
                         color={'white'}
+                        variant={"flushed"}
                     />
                 </InputGroup>
 
@@ -165,8 +172,7 @@ function CreateAccountFormulary({ handlevisibility }: any) {
                         <Text
                             fontSize='17px'
                             mt={5}
-                            color={'#96A4BB'
-                            }
+                            color={'#96A4BB'}
                         >
                             Telefone
                         </Text>
@@ -175,6 +181,7 @@ function CreateAccountFormulary({ handlevisibility }: any) {
                             size='md'
                         >
                             <Input
+                                required
                                 name="telefone"
                                 value={fields.telefone}
                                 onChange={event => dispatch({
@@ -185,6 +192,7 @@ function CreateAccountFormulary({ handlevisibility }: any) {
                                 pr='4.5rem'
                                 type='text'
                                 color={'white'}
+                                variant={"flushed"}
                             />
                         </InputGroup>
                     </Box>
@@ -201,6 +209,7 @@ function CreateAccountFormulary({ handlevisibility }: any) {
                             size='md'
                         >
                             <Input
+                                required
                                 name="celular"
                                 value={fields.celular}
                                 onChange={event => dispatch({
@@ -211,6 +220,7 @@ function CreateAccountFormulary({ handlevisibility }: any) {
                                 pr='4.5rem'
                                 type='text'
                                 color={'white'}
+                                variant={"flushed"}
                             />
                         </InputGroup>
                     </Box>
@@ -222,8 +232,7 @@ function CreateAccountFormulary({ handlevisibility }: any) {
                     <Text
                         fontSize='17px'
                         mt={5}
-                        color={'#96A4BB'
-                        }
+                        color={'#96A4BB'}
                     >
                         Senha
                     </Text>
@@ -232,6 +241,7 @@ function CreateAccountFormulary({ handlevisibility }: any) {
                         size='md'
                     >
                         <Input
+                            required
                             name="senha"
                             value={fields.senha}
                             onChange={event => dispatch({
@@ -242,13 +252,13 @@ function CreateAccountFormulary({ handlevisibility }: any) {
                             pr='4.5rem'
                             type='password'
                             color={'white'}
+                            variant={"flushed"}
                         />
                     </InputGroup>
                     <Text
                         fontSize='17px'
                         mt={5}
-                        color={'#96A4BB'
-                        }
+                        color={'#96A4BB'}
                     >
                         Confirmar senha
                     </Text>
@@ -257,6 +267,7 @@ function CreateAccountFormulary({ handlevisibility }: any) {
                         size='md'
                     >
                         <Input
+                            required
                             name="confirmarSenha"
                             value={fields.confirmarSenha}
                             onChange={event => dispatch({
@@ -267,6 +278,8 @@ function CreateAccountFormulary({ handlevisibility }: any) {
                             pr='4.5rem'
                             type='password'
                             color={'white'}
+                            variant={"flushed"}
+
                         />
                     </InputGroup>
                 </Box>
@@ -306,7 +319,6 @@ function CreateAccountFormulary({ handlevisibility }: any) {
                 </Box>
             </Box>
         </>
-
     );
 }
 
